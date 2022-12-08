@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text to Image</title>
+  <style>
+    /* 設定文字輸入框的樣式 */
+    input[type="text"] {
+      width: 200px;
+      height: 30px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 定義文字輸入框 -->
+  <input type="text" id="textInput" placeholder="請輸入文字">
+
+  <!-- 定義圖片顯示區塊 -->
+  <div id="imageContainer"></div>
+
+  <!-- 引入 JsBarcode 套件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+
+  <script>
+    // 取得文字輸入框和圖片顯示區塊的 DOM 物件
+    const textInput = document.getElementById('textInput');
+    const imageContainer = document.getElementById('imageContainer');
+
+    // 監聽文字輸入框的輸入事件
+    textInput.addEventListener('input', (event) => {
+      // 取得文字輸入框的值
+      const text = event.target.value;
+
+      // 初始化 Canvas
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 將文字轉換成圖片
+      JsBarcode(canvas, text, {
+        format: 'CODE128',
+        width: 2,
+        height: 100,
+        displayValue: true,
+        fontSize: 20,
+        textAlign: 'center',
+        fontOptions: '',
+        font: 'monospace',
+        textPosition: 'bottom',
+        textMargin: 2,
+        fontSize: 20,
+        background: '#ffffff',
+        lineColor: '#000000',
+        margin: 10,
+        marginTop: undefined,
+        marginBottom: undefined,
+        marginLeft: undefined,
+        marginRight: undefined,
+      });
+
+      // 將圖片插入到圖片顯示區塊中
+      imageContainer.innerHTML = '';
+      imageContainer.appendChild(canvas);
